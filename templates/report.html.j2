@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ report_title }}</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #1f2933;
+      --muted: #596579;
+      --line: #d9dee8;
+      --accent: #0f766e;
+      --warning: #9a3412;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 32px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: Segoe UI, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 28px;
+      font-size: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+    .meta, .note {
+      color: var(--muted);
+    }
+    .scope {
+      margin: 18px 0;
+      padding: 12px 14px;
+      border-left: 4px solid var(--accent);
+      background: var(--panel);
+    }
+    .scope.warning {
+      border-color: var(--warning);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .value {
+      margin-top: 4px;
+      font-size: 20px;
+      font-weight: 650;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 22px;
+      background: var(--panel);
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+      word-break: break-word;
+    }
+    th {
+      background: #eef2f7;
+      font-weight: 650;
+    }
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{ report_title }}</h1>
+  <p class="meta">Generated time: {{ generated_time }}</p>
+  <p class="meta">SBOM file: {{ sbom_file_name }}</p>
+
+  <div class="scope{% if scope_label == 'Test Sample SBOM' %} warning{% endif %}">
+    <strong>{{ scope_label }}</strong><br>
+    {{ scope_note }}
+  </div>
+
+  <h2>How To Interpret This Report</h2>
+  <ul>
+    {% for item in interpretation %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Product</h2>
+  <div class="grid">
+    <div class="card"><div class="label">Product Name</div><div class="value">{{ product_name }}</div></div>
+    <div class="card"><div class="label">Product Version</div><div class="value">{{ product_version }}</div></div>
+    <div class="card"><div class="label">SBOM Format</div><div class="value">{{ sbom_format }}</div></div>
+    <div class="card"><div class="label">CycloneDX Version</div><div class="value">{{ spec_version }}</div></div>
+  </div>
+
+  <h2>Component Summary</h2>
+  <div class="grid">
+    {% for label, value in component_summary.items() %}
+    <div class="card"><div class="label">{{ label }}</div><div class="value">{{ value }}</div></div>
+    {% endfor %}
+  </div>
+
+  <h2>Vulnerability Severity Summary</h2>
+  <div class="grid">
+    {% for label, value in vulnerability_summary.items() %}
+    <div class="card"><div class="label">{{ label }}</div><div class="value">{{ value }}</div></div>
+    {% endfor %}
+  </div>
+
+  <h2>License Summary</h2>
+  {% if licenses %}
+  <table>
+    <thead>
+      <tr>
+        <th>License ID / Name</th>
+        <th>Used by component count</th>
+        <th>Component list</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in licenses %}
+      <tr>
+        <td>{{ row.license }}</td>
+        <td>{{ row.count }}</td>
+        <td>{{ row.components }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="note">No license information found.</p>
+  {% endif %}
+
+  <h2>Component Table</h2>
+  <table>
+    <thead>
+      <tr>
+        {% for col in component_columns %}
+        <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in components %}
+      <tr>
+        {% for col in component_columns %}
+        <td>{{ row[col] }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Vulnerability Table</h2>
+  {% if vulnerabilities %}
+  <table>
+    <thead>
+      <tr>
+        {% for col in vulnerability_columns %}
+        <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in vulnerabilities %}
+      <tr>
+        {% for col in vulnerability_columns %}
+        <td>{{ row[col] }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="note">No vulnerabilities found or no mapped vulnerabilities.</p>
+  {% endif %}
+
+  <h2>Notes</h2>
+  <ul>
+    {% for note in notes %}
+    <li>{{ note }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
