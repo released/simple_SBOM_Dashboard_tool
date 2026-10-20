@@ -33,14 +33,24 @@ not require network access after Python packages are installed.
 
 ```text
 .
-|-- app.py
+|-- src/
+|   |-- app.py
+|   `-- launcher.py
+|-- scripts/
+|   |-- run_tool.bat
+|   |-- clean_python.bat
+|   `-- clean.ps1
+|-- tests/
+|   `-- test_layout.py
+|-- docs/images/
+|   |-- run_dashboard.jpg
+|   |-- run_dashboard2.jpg
+|   `-- offline_dashboard.jpg
+|-- app.py (compatibility entry)
 |-- requirements.txt
 |-- README.md
 |-- run_dashboard.pyw
 |-- run_dashboard.bat
-|-- run_dashboard.jpg
-|-- run_dashboard2.jpg
-|-- offline_dashboard.jpg
 |-- sample_data/
 |   `-- README.md
 |-- exports/
@@ -88,7 +98,7 @@ Streamlit server, and opens the dashboard in the default browser.
 On first run, the launcher may spend a few minutes installing or checking Python
 packages:
 
-![SBOM Dashboard first-run package check](run_dashboard2.jpg)
+![SBOM Dashboard first-run package check](docs/images/run_dashboard2.jpg)
 
 During this step:
 
@@ -98,7 +108,7 @@ During this step:
 
 After initialization finishes, the launcher shows the running server URL:
 
-![SBOM Dashboard launcher window](run_dashboard.jpg)
+![SBOM Dashboard launcher window](docs/images/run_dashboard.jpg)
 
 The launcher window means the local dashboard server is running. Keep this
 window open while using the dashboard.
@@ -130,7 +140,7 @@ Run these commands from the dashboard directory:
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-streamlit run app.py
+streamlit run src\app.py
 ```
 
 Then open the URL printed by Streamlit, usually:
@@ -159,7 +169,7 @@ pip install --no-index --find-links wheelhouse -r requirements.txt
 
 After the launcher starts the server, the browser opens the dashboard.
 
-![Offline SBOM Dashboard first screen](offline_dashboard.jpg)
+![Offline SBOM Dashboard first screen](docs/images/offline_dashboard.jpg)
 
 On the first screen:
 
@@ -361,13 +371,14 @@ Before sharing this tool externally, include only the dashboard source package.
 Do include:
 
 - `app.py`
+- `src\` and `scripts\` (root launchers delegate to these)
 - `requirements.txt`
 - `README.md`
 - `run_dashboard.pyw`
 - `run_dashboard.bat`
-- `run_dashboard.jpg`
-- `run_dashboard2.jpg`
-- `offline_dashboard.jpg`
+- `docs\images\run_dashboard.jpg`
+- `docs\images\run_dashboard2.jpg`
+- `docs\images\offline_dashboard.jpg`
 - `sample_data\README.md`
 - `exports\.gitkeep`
 - `templates\report.html.j2`
@@ -381,6 +392,24 @@ Do not include:
 - `run_dashboard.log`
 - `wheelhouse\` unless intentionally providing offline dependencies
 - `__pycache__\`
+
+## Layout Verification And Clean
+
+The workspace layout standard is `#READ_ME_FIRST#/PROJECT_LAYOUT.md`. Root
+`app.py`, `run_dashboard.pyw`, and `run_dashboard.bat` remain compatibility entry
+points. Venv, requirements, templates, sample_data, exports, and log paths keep
+their original project-root locations.
+
+```bat
+python -m compileall -q src tests app.py run_dashboard.pyw
+python -m unittest discover -s tests -v
+scripts\run_tool.bat --check
+scripts\clean_python.bat
+```
+
+Clean removes only `build/obj` and source/test/script Python caches. It does not
+remove reports, templates, sample data, venv, logs, INI, EXE, or unknown files.
+This project still runs from Python/Streamlit; no standalone EXE build is claimed.
 
 ## Common Problems
 
