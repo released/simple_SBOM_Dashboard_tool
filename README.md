@@ -407,7 +407,7 @@ scripts\run_tool.bat --check
 scripts\clean_python.bat
 ```
 
-Clean removes only `build/obj` and source/test/script Python caches. It does not
+Clean removes only `build/obj` and root/source/test/script Python caches. It does not
 remove reports, templates, sample data, venv, logs, INI, EXE, or unknown files.
 This project still runs from Python/Streamlit; no standalone EXE build is claimed.
 
