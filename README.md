@@ -1,5 +1,10 @@
 # Offline SBOM Dashboard
 
+## Safe clean
+
+`scripts/clean_python.bat` removes allowlisted compiler/PyInstaller work files and .pyc/.pyo inside known __pycache__ folders. It never recursively purges build/obj or caches: EXE/INI/DLL/log/data/unknown files remain even there, and only empty directories are removed. `/?`, `-h` and `--help` do not delete anything. Codex verifies this automatically when creating/changing clean scripts.
+
+
 Windows 11 local dashboard for CycloneDX JSON SBOM review and Trivy JSON
 vulnerability result review.
 
@@ -407,7 +412,7 @@ scripts\run_tool.bat --check
 scripts\clean_python.bat
 ```
 
-Clean removes only `build/obj` and root/source/test/script Python caches. It does not
+Clean removes only allowlisted work files and root/source/test/script bytecode, never whole obj/cache folders. It does not
 remove reports, templates, sample data, venv, logs, INI, EXE, or unknown files.
 This project still runs from Python/Streamlit; no standalone EXE build is claimed.
 

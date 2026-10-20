@@ -1,5 +1,13 @@
 # HANDOFF.md
 
+## File-only Python clean follow-up (2026-10-21)
+
+- Changed scripts/clean.ps1, scripts/clean_python.bat and new companion clean_intermediates.ps1. Final cross-profile review found the earlier cleaner still purged whole build/obj/cache folders; replaced it with file allowlists and empty-directory-only removal.
+- PASS: shared verify_clean_preservation.ps1 with -CleanActualProject -CheckNestedDelivery -CheckPythonCaches -CheckReparseRejection. Twenty-three protected fixture files plus source retained, including EXE/INI/unknowns inside obj AND root/source caches; known obj/pyc/PYO removed, help/idempotence passed, both native and source/cache junctions rejected before native deletion.
+- PASS: actual clean protected delivery hashes unchanged (no build delivery files present). Source/application behavior unchanged from the previously verified baseline; no application rebuild/version bump solely for clean changes. No new packaging or hardware/GUI acceptance claim.
+- No private runtime files or new EXEs staged; ordinary reviewed publication only to the existing origin.
+
+
 ## Layout Update 2026-10-20
 
 ### Root-cache clean follow-up (2026-10-20)
