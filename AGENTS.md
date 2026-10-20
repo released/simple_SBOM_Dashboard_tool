@@ -1,6 +1,8 @@
 # AGENTS.md
 
 - Follow workspace `#READ_ME_FIRST#/PROJECT_LAYOUT.md`.
+
+- The Python clean also removes the explicitly named project-root `__pycache__`; do not scan private output trees for arbitrary folders to purge.
 - Application and desktop-launcher logic live under `src`; automation under
   `scripts`; screenshots under `docs/images`. Root launchers are compatibility
   entry points and must keep working.

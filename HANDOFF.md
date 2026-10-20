@@ -2,6 +2,12 @@
 
 ## Layout Update 2026-10-20
 
+### Root-cache clean follow-up (2026-10-20)
+
+- Added the exact root `__pycache__` to the existing checked cache targets; unknown build/user-output folders remain protected.
+- PASS on resume: actual clean, root/source cache removal, 9 protected build sentinels plus source, idempotence, and junction rejection before deletion. No actual protected build outputs existed; 2 source/launcher/Streamlit screen tests PASS (existing bare-mode context warning only).
+- Publication evidence is recorded in workspace `PROJECT_LAYOUT_MIGRATION.md`.
+
 - Application moved to `src/app.py`, desktop launcher to `src/launcher.py`, batch
   automation to `scripts/run_tool.bat`, and three screenshots to `docs/images`.
 - The six moves were no-overwrite and SHA-256 verified before the required path

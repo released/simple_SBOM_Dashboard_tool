@@ -42,6 +42,10 @@ $cacheDirectories = @(foreach ($folder in @('src', 'tests', 'scripts')) {
     Get-CheckedTree (Join-Path $root $folder) |
         Where-Object { $_.PSIsContainer -and $_.Name -eq '__pycache__' }
 })
+# Include the known project-root cache without scanning user/output trees.
+$cacheDirectories += @(Get-CheckedTree (Join-Path $root '__pycache__') |
+    Where-Object { $_.PSIsContainer -and $_.Name -eq '__pycache__' })
+
 # Validate all targets before deleting anything. Do not infer that tests/logs/
 # unknown nested delivery folders are disposable merely from their names.
 if ($objectItems.Count) { Remove-Item -LiteralPath $objectPath -Recurse -Force }
@@ -50,5 +54,5 @@ foreach ($cache in $cacheDirectories | Sort-Object FullName -Descending) {
         Remove-Item -LiteralPath $cache.FullName -Recurse -Force
     }
 }
-Write-Host "Clean complete. Removed build/obj and source/test/script Python caches only."
+Write-Host "Clean complete. Removed build/obj and known root/source/test/script Python caches only."
 Write-Host "Preserved executables, INI, DLLs, data, logs, evidence, exports, and unknown delivery files."
