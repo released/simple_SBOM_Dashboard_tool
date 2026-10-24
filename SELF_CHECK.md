@@ -1,5 +1,21 @@
 # SELF_CHECK.md
 
+## Size assessment 2026-10-24
+
+- SIZ-01/02: source-only Streamlit/Python delivery; no native/standalone EXE build
+  exists. The declared Streamlit/pandas/Plotly/NetworkX/Jinja2 dependencies support
+  actual dashboard/report features. No verified-unused dependency or safe EXE
+  reduction was identified; retain the existing baseline rather than remove
+  graphs/reports or invent a packaging migration.
+- No application, requirements, runtime or build-option changes. Candidate EXE
+  size/performance comparisons are N/A, not a measured saving.
+- PASS: `.venv/Scripts/python.exe -B -m unittest discover -s tests -v`, 2 tests:
+  launcher path contract and both Streamlit entry screens without customer input
+  or app exceptions. The known bare-mode ScriptRunContext warning remains.
+- Customer SBOM/vulnerability/report processing was not rerun: those unchanged
+  workflows are outside this documentation-only assessment. Existing clean
+  evidence below is reused; no new native build or full product PASS is claimed.
+
 ## File-only Python clean follow-up (2026-10-21)
 
 - Changed scripts/clean.ps1, scripts/clean_python.bat and new companion clean_intermediates.ps1. Final cross-profile review found the earlier cleaner still purged whole build/obj/cache folders; replaced it with file allowlists and empty-directory-only removal.

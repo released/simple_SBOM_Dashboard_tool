@@ -1,5 +1,15 @@
 # HANDOFF.md
 
+## Size assessment 2026-10-24
+
+Assessed under workspace EXE Size Optimization. Keep the source-only dashboard
+and its required dependencies; no standalone EXE build or justified safe removal
+exists. Application/requirements are unchanged. Fresh launcher/initial-screen
+tests pass (2/2, no customer input; known Streamlit bare-mode warning only).
+SELF_CHECK records N/A for EXE/paired-candidate comparisons, not an invented size
+or performance benefit. Only the two assessment documents are intended for
+existing-origin publication; private SBOMs, reports, venv and logs remain local.
+
 ## File-only Python clean follow-up (2026-10-21)
 
 - Changed scripts/clean.ps1, scripts/clean_python.bat and new companion clean_intermediates.ps1. Final cross-profile review found the earlier cleaner still purged whole build/obj/cache folders; replaced it with file allowlists and empty-directory-only removal.
