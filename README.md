@@ -1,10 +1,5 @@
 # Offline SBOM Dashboard
 
-## Safe clean
-
-`scripts/clean_python.bat` removes allowlisted compiler/PyInstaller work files and .pyc/.pyo inside known __pycache__ folders. It never recursively purges build/obj or caches: EXE/INI/DLL/log/data/unknown files remain even there, and only empty directories are removed. `/?`, `-h` and `--help` do not delete anything. Codex verifies this automatically when creating/changing clean scripts.
-
-
 Windows 11 local dashboard for CycloneDX JSON SBOM review and Trivy JSON
 vulnerability result review.
 
@@ -369,52 +364,14 @@ If vulnerability fields show `N/A`, the correct conclusion is:
 Vulnerability status is unknown. N/A does not mean clean.
 ```
 
-## Packaging Checklist
-
-Before sharing this tool externally, include only the dashboard source package.
-
-Do include:
-
-- `app.py`
-- `src\` and `scripts\` (root launchers delegate to these)
-- `requirements.txt`
-- `README.md`
-- `run_dashboard.pyw`
-- `run_dashboard.bat`
-- `docs\images\run_dashboard.jpg`
-- `docs\images\run_dashboard2.jpg`
-- `docs\images\offline_dashboard.jpg`
-- `sample_data\README.md`
-- `exports\.gitkeep`
-- `templates\report.html.j2`
-
-Do not include:
-
-- customer or vendor SBOM files
-- `customer_SBOM\`
-- generated `exports\*.html` reports
-- `.venv\`
-- `run_dashboard.log`
-- `wheelhouse\` unless intentionally providing offline dependencies
-- `__pycache__\`
-
-## Layout Verification And Clean
-
-The workspace layout standard is `#READ_ME_FIRST#/PROJECT_LAYOUT.md`. Root
-`app.py`, `run_dashboard.pyw`, and `run_dashboard.bat` remain compatibility entry
-points. Venv, requirements, templates, sample_data, exports, and log paths keep
-their original project-root locations.
+## Compiler Cleanup
 
 ```bat
-python -m compileall -q src tests app.py run_dashboard.pyw
-python -m unittest discover -s tests -v
-scripts\run_tool.bat --check
 scripts\clean_python.bat
 ```
 
-Clean removes only allowlisted work files and root/source/test/script bytecode, never whole obj/cache folders. It does not
-remove reports, templates, sample data, venv, logs, INI, EXE, or unknown files.
-This project still runs from Python/Streamlit; no standalone EXE build is claimed.
+Removes compiler/cache intermediates only. Reports, templates, sample data,
+virtual environments, logs, settings and unknown files are retained.
 
 ## Common Problems
 
