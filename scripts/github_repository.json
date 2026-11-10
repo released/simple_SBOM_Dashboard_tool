@@ -1,0 +1,11 @@
+{
+  "publication_enabled": true,
+  "repository": "released/simple_SBOM_Dashboard_tool",
+  "visibility": "PUBLIC",
+  "branch": "main",
+  "readme_title": "Offline SBOM Dashboard",
+  "identity_files": [
+    "README.md"
+  ],
+  "delivery_files": []
+}

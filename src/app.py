@@ -1156,7 +1156,12 @@ def sidebar_inputs() -> tuple[dict[str, Any] | None, str, dict[str, Any] | None,
 
 def main() -> None:
     st.set_page_config(page_title="Offline SBOM Dashboard", layout="wide")
-    st.title("Offline SBOM Dashboard")
+    from build_info import BUILD_LABEL, BUILD_DATETIME
+    heading, identity = st.columns([3, 2])
+    with heading:
+        st.title("Offline SBOM Dashboard")
+    with identity:
+        st.markdown(f'<div style="text-align:right;overflow-wrap:anywhere" title="{BUILD_DATETIME}">{BUILD_LABEL}</div>', unsafe_allow_html=True)
     st.caption("CycloneDX JSON SBOM and Trivy JSON vulnerability scan viewer")
 
     sbom_data, sbom_name, trivy_data, trivy_name, input_errors = sidebar_inputs()

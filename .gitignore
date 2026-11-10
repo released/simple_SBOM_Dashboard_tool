@@ -17,3 +17,12 @@ dist/
 *.egg-info/
 .DS_Store
 Thumbs.db
+
+# Prepared packaging resource and local engineering data.
+/scripts/build/version_info.generated.txt
+/docs/internal/
+/AGENTS.md
+/HANDOFF.md
+/SELF_CHECK.md
+/MANUAL_CLEANUP.md
+/github_push.local.psd1
